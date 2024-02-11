@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+{% block head %}
+{% load static %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="style">
+ <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+ <script src="{% static '//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js' %}"></script>
+ <script src="{% static '//code.jquery.com/jquery-1.11.1.min.js' %}"></script>
+{% endblock%}
+{% block content %}
+<div class="demm">
+    {% for profile in profiles %}
+    <div class="card">
+      {% if profile.image %}
+      <img src="{{ profile.image.url }}" alt="John" style="width: 250px;height:250px;" />
+      {% else %}
+      <p>THIS USER HAS NO IMAGE</p>
+      {% endif %}
+      <h1>Name : {{profile.name}}</h1>
+      <p class="title">Skills : {{profile.skills}}</p>
+      <p>About : {{profile.about}}</p>
+      
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}

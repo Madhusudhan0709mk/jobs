@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+    <div class="col-md-4 ">
+    <div class="card">
+        <div class="card-header">
+            {{customer_record.first_name}}
+            {{customer_record.last_name}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title"><strong>Id</strong>: {{viewjobs.id}}</h5>
+          <h5 class="card-title"><strong>Companyname</strong>: {{viewjobs.email}}</h5>
+          <h5 class="card-title"><strong>Address</strong>: {{viewjobs.address}}</h5>
+          <h5 class="card-title"><strong>Required cgpa</strong>: {{viewjobs.cgpa}}</h5>
+          <h5 class="card-title"><strong>skills</strong>: {{viewjobs.skills}}</h5>
+          <h5 class="card-title"><strong>About jobs</strong>: {{viewjobs.about}}</h5>
+          <h5 class="card-title"><strong>Created</strong>: {{viewjobs.created_at}}</h5>
+          
+        </div>
+    </div>
+</div>
+      <br>
+      
+</div>
+{% endblock %}

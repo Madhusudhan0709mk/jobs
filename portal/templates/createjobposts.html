@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+    <div class="col-md-4 ">
+            <form action="{% url 'create_job_posts' %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                <input type="text" placeholder="company name" name="companyname" class="w-100" />
+                </div>
+                <div class="mb-3">
+                <input type="text" placeholder="address" name="address" class="w-100"/>
+                </div>
+                <div class="mb-3">
+                <input type="text" placeholder="email" name="email" class="w-100"/>
+                </div>
+                <div class="mb-3">
+                <input type="text" placeholder="required cgpa" name="cgpa"class="w-100" />
+                </div>
+                <div class="mb-3">
+                <input type="text" placeholder="required skills" name="skills"class="w-100"/>
+                </div>
+                <div class="mb-3">
+                <input type="text" placeholder="About job" name="about" class="w-100"/>
+                </div> 
+                <div class="mb-3">
+                    <input type="date" placeholder="date" name="created_at" class="w-100"/>
+                </div> 
+                <div class="mb-3">
+                <input type="submit" value="Submit" class="secondary"></input>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        <strong>Error(s):</strong>
+        <ul>
+            {% for error in form.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+       
+{% endblock %}
