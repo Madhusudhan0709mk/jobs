@@ -22,12 +22,18 @@ class createjobposts(models.Model):
     def __str__(self):
         return self.companyname
     
-# class applyjob(models.Model):
-#     status_choices = (
-#         ('accepted','accepted')
-#     )
-#     user = models.ForeignKey(User,on_delte=models.CASCADE)
-#     createjobposts =models.ForeignKey(createjobposts,on_delte=models.CASCADE)
-#     applied_at = models.DateTimeField(auto_now_add=True)
+class applyjob(models.Model):
+    status_choices = (
+        ('accepted','accepted'),
+        ('declined','declined'),
+        ('pending','pending')
+    )
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    createjobposts =models.ForeignKey(createjobposts,on_delete=models.CASCADE)
+    applied_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20,choices=status_choices)
+    
+    def __str__(self):
+        return f'{self.user}+{self.createjobposts}'
     
     

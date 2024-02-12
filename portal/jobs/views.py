@@ -2,10 +2,22 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
 from .forms import ProfileForm,createjobpostsForm
-from .models import Profile,createjobposts
+from .models import Profile,createjobposts,applyjob
+from django.core.paginator import Paginator
 def index(request):
+    return render(request,'index.html')
+
+def contact(request):
+    return render(request,'contact.html')
+
+def listjobs(request):
     posts = createjobposts.objects.all()
-    return render(request,'index.html',{'posts':posts})
+    #setup pagination
+    p = Paginator(createjobposts.objects.all(),3)
+    page = request.GET.get('page')
+    pos = p.get_page(page)
+    return render(request,'listjobs.html',{'posts':posts,'pos':pos})
+
 def register(request):
     if request.method == 'POST':
         first_name = request.POST['first_name']
@@ -77,8 +89,9 @@ def profile_edit(request):
     return render(request, 'profile_edit.html', {'form': form})
 
 def listprofiles(request):
+    user_applied_jobs = applyjob.objects.filter(user=request.user)
     profiles = Profile.objects.all()
-    return render(request,'listprofiles.html',{'profiles':profiles})
+    return render(request,'listprofiles.html',{'profiles':profiles,'user_applied_jobs':user_applied_jobs})
 
 def create_job_posts(request):
     if request.user.is_authenticated and request.user.username =="recruiter":
@@ -124,3 +137,13 @@ def viewjobdetailsupdate(request,pk):
     else:
         messages.info(request,'You must be logged in to use the page')
         return redirect('index')
+    
+def applytojob(request,pk):
+    job = createjobposts.objects.get(pk=pk)
+    applyjob.objects.create(
+        createjobposts = job,
+        user = request.user,
+        status = 'pending'
+    )
+    messages.success(request,'You have applied job successfully')
+    return redirect('index') 
