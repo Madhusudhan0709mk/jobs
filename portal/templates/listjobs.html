@@ -79,7 +79,11 @@
                     </span
                   >
                   <span class="text-truncate me-3"
-                    ><a href = "{% url 'viewjobdetails' post.id %}">viewdetails</a></span
+                    >view applied candidates : <a href = "{% url 'applicants' post.id %}">view applicants</a>
+                    </span
+                  >
+                  <span class="text-truncate me-3"
+                    ><a href = "{% url 'viewjobdetails' post.id %}">view job details</a></span
                   >
                 </div>
               </div>

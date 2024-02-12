@@ -4,6 +4,11 @@ from django.contrib import messages
 from .forms import ProfileForm,createjobpostsForm
 from .models import Profile,createjobposts,applyjob
 from django.core.paginator import Paginator
+from django.views import View
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+import csv
+from django.http import HttpResponse
 def index(request):
     return render(request,'index.html')
 
@@ -147,3 +152,32 @@ def applytojob(request,pk):
     )
     messages.success(request,'You have applied job successfully')
     return redirect('index') 
+
+def applicants(request,pk):
+    job = get_object_or_404(createjobposts, pk=pk)
+    applicants = job.applyjob_set.filter(status__in=['pending', 'accepted', 'declined'])
+    context = {
+        'job': job,
+        'applicants': applicants,
+    }
+    return render(request,'applicants.html',context)
+
+class DownloadApplicantsCSVView(View):
+    def get(self, request, pk):
+        job = get_object_or_404(createjobposts, pk=pk)
+        applicants = job.applyjob_set.filter(status__in=['pending', 'accepted', 'declined'])
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="applicants_{job.companyname}.csv"'
+
+        csv_writer = csv.writer(response)
+        csv_writer.writerow(['Name', 'Email', 'Bio', 'Phone', 'Address', 'City', 'Zipcode', 'Created_at'])
+
+        for applicant in applicants:
+            csv_writer.writerow([
+                applicant.user.username,
+                applicant.user.email,
+               
+            ])
+
+        return response
