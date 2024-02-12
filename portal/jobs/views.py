@@ -101,3 +101,26 @@ def viewjobdetails(request,pk):
     else:
         messages.info(request,'You must be logged in to use the page')
         return redirect('index')
+    
+def viewjobdetailsdelete(request,pk):
+    if request.user.is_authenticated:
+        delete_it = createjobposts.objects.get(id=pk)
+        delete_it.delete()
+        messages.success(request,'you have deleted the job post')
+        return redirect('index')
+    else:
+        messages.info(request,'You must be logged in to use the page')
+        return redirect('index')
+    
+def viewjobdetailsupdate(request,pk):
+    if request.user.is_authenticated:
+        viewjobs= createjobposts.objects.get(id=pk)
+        form = createjobpostsForm(request.POST or None, instance=viewjobs)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "post Has Been Updated!")
+            return redirect('viewjobdetails', pk=viewjobs.id)
+        return render(request,'viewjobdetailsupdate.html',{'form':form})
+    else:
+        messages.info(request,'You must be logged in to use the page')
+        return redirect('index')

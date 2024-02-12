@@ -3,19 +3,19 @@
 <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
     <div class="col-md-4 ">
     <div class="card">
-        <div class="card-header">
-            {{customer_record.first_name}}
-            {{customer_record.last_name}}
-        </div>
         <div class="card-body">
             <h5 class="card-title"><strong>Id</strong>: {{viewjobs.id}}</h5>
-          <h5 class="card-title"><strong>Companyname</strong>: {{viewjobs.email}}</h5>
+          <h5 class="card-title"><strong>Companyname</strong>: {{viewjobs.companyname}}</h5>
           <h5 class="card-title"><strong>Address</strong>: {{viewjobs.address}}</h5>
           <h5 class="card-title"><strong>Required cgpa</strong>: {{viewjobs.cgpa}}</h5>
           <h5 class="card-title"><strong>skills</strong>: {{viewjobs.skills}}</h5>
           <h5 class="card-title"><strong>About jobs</strong>: {{viewjobs.about}}</h5>
           <h5 class="card-title"><strong>Created</strong>: {{viewjobs.created_at}}</h5>
-          
+          {% if request.user.username == "recruiter" %}
+          <a href="{% url 'viewjobdetailsdelete' viewjobs.id %}" class="btn btn-danger">DELETE</a>
+          <a href="{% url 'viewjobdetailsupdate' viewjobs.id %}" class="btn btn-primary">UPDATE</a>
+          {% else %}
+          {% endif %}
         </div>
     </div>
 </div>

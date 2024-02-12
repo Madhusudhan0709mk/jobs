@@ -13,5 +13,7 @@ urlpatterns = [
     path('listprofiles/',views.listprofiles,name='listprofiles'),
     path('create_job_posts/',views.create_job_posts,name='create_job_posts'),
     path('viewjobdetails/<int:pk>/',views.viewjobdetails,name='viewjobdetails'),
+    path('viewjobdetailsdelete/<int:pk>/',views.viewjobdetailsdelete,name='viewjobdetailsdelete'),
+    path('viewjobdetailsupdate/<int:pk>/',views.viewjobdetailsupdate,name='viewjobdetailsupdate'),
 
 ]

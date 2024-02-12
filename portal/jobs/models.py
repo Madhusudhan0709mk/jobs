@@ -22,3 +22,12 @@ class createjobposts(models.Model):
     def __str__(self):
         return self.companyname
     
+# class applyjob(models.Model):
+#     status_choices = (
+#         ('accepted','accepted')
+#     )
+#     user = models.ForeignKey(User,on_delte=models.CASCADE)
+#     createjobposts =models.ForeignKey(createjobposts,on_delte=models.CASCADE)
+#     applied_at = models.DateTimeField(auto_now_add=True)
+    
+    
