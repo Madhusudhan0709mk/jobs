@@ -9,6 +9,7 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 import csv
 from django.http import HttpResponse
+from django.db.models import Q
 def index(request):
     return render(request,'index.html')
 
@@ -111,7 +112,7 @@ def create_job_posts(request):
         return render(request,'createjobposts.html',{'form':form})
     else:
         return render(request,'createjobposts.html')
-    
+   
 def viewjobdetails(request,pk):
     if request.user.is_authenticated:
         viewjobs= get_object_or_404(createjobposts, id=pk)
@@ -147,18 +148,20 @@ def applytojob(request,pk):
     job = createjobposts.objects.get(pk=pk)
     applyjob.objects.create(
         createjobposts = job,
-        user = request.user,
-        status = 'pending'
+        status = 'pending',
+        user=request.user
     )
     messages.success(request,'You have applied job successfully')
     return redirect('index') 
 
 def applicants(request,pk):
     job = get_object_or_404(createjobposts, pk=pk)
+
     applicants = job.applyjob_set.filter(status__in=['pending', 'accepted', 'declined'])
     context = {
         'job': job,
         'applicants': applicants,
+
     }
     return render(request,'applicants.html',context)
 
@@ -181,3 +184,17 @@ class DownloadApplicantsCSVView(View):
             ])
 
         return response
+    
+def search(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        searched = createjobposts.objects.filter(Q(companyname__icontains=searched)|Q(address__icontains=searched))
+        return render(request,"listjobs.html",{'searched':searched})
+        # if not searched:
+        #     messages.success(request,'NO RESULTS FOUND ')
+        #     return render(request,"listjobs.html")
+        # else:
+        #     return render(request,"listjobs.html")   
+    else:
+        messages.success(request,'NO RESULTS FOUND ')
+        return render (request,'listjobs.html')

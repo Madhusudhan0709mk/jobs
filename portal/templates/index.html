@@ -89,30 +89,34 @@
             >
             <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
             <a href="{% url 'listjobs' %}" class="nav-item nav-link">Jobs</a>
-
             <a href="{% url 'profile_view' %}" class="nav-item nav-link"
               >view Profile</a
             >
             <a href="{% url 'listprofiles' %}" class="nav-item nav-link"
               >other profiles</a
             >
-            <a href="{% url 'contact'%}" class="nav-item nav-link">Contact</a>
+            <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
             <a href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
             {% else %}
-            <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
-            <a href="{% url 'register'%}" class="nav-item nav-link">Register</a>
+            <a href="{% url 'login' %}" class="nav-item nav-link">login</a>
+            <a href="{% url 'register' %}" class="nav-item nav-link">Register</a>
             {% endif %}
           </div>
-          {% if user.is_authenticated %} {% if user.username == 'recruiter' %}
+          {% if user.is_authenticated %}
+           {% if user.username == 'recruiter' %}
           <a
             href="{% url 'create_job_posts' %}"
             class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block"
             >Post Jobs<i class="fa fa-arrow-right ms-3"></i
           ></a>
-          {% else %} {% endif %} {% else %} {% endif %}
+          {% else %} 
+          {% endif %} 
+        {% else %} 
+      {% endif %}
         </div>
       </nav>
-      {% if messages %} {% for message in messages %}
+      {% if messages %} 
+      {% for message in messages %}
       <div
         class="alert alert-warning alert-dismissible fade show text-align-center"
         role="alert"
@@ -125,8 +129,10 @@
           aria-label="Close"
         ></button>
       </div>
-      {% endfor %} {% endif %}
+      {% endfor %} 
+      {% endif %}
       <!-- Navbar End -->
+      
       {% block content %} {% endblock %}
       <!-- Carousel Start -->
       <div class="container-fluid p-0">
@@ -196,8 +202,7 @@
         </div>
       </div>
       <!-- Carousel End -->
-
-      <!-- Category Start -->
+      
 
       <!-- Footer Start -->
       <footer>
