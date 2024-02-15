@@ -37,3 +37,7 @@ class applyjob(models.Model):
         return f'{self.user}+{self.createjobposts}'
     
     
+class contact(models.Model):
+    name = models.CharField(max_length=250)
+    email = models.CharField(max_length=250)
+    message = models.TextField(max_length=250)

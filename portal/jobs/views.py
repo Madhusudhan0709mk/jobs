@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
-from .forms import ProfileForm,createjobpostsForm
+from .forms import ProfileForm,createjobpostsForm,contactForm
 from .models import Profile,createjobposts,applyjob
 from django.core.paginator import Paginator
 from django.views import View
@@ -198,3 +198,16 @@ def search(request):
     else:
         messages.success(request,'NO RESULTS FOUND ')
         return render (request,'listjobs.html')
+    
+def contact(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = contactForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request,'Your message is submmitted')
+                return redirect('index')
+        else:
+            return render(request,'contact.html')
+    else:
+        return render(request,'contact.html')
