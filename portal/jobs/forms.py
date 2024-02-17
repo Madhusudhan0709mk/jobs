@@ -17,4 +17,4 @@ class createjobpostsForm(forms.ModelForm):
 class contactForm(forms.ModelForm):
     class Meta:
         model = contact
-        fields = ('__all__')
+        fields = ['name','email','message']

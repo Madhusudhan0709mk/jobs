@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
-from .forms import ProfileForm,createjobpostsForm,contactForm
+from .forms import ProfileForm,createjobpostsForm
+from .forms import contactForm 
 from .models import Profile,createjobposts,applyjob
 from django.core.paginator import Paginator
 from django.views import View
@@ -12,9 +13,6 @@ from django.http import HttpResponse
 from django.db.models import Q
 def index(request):
     return render(request,'index.html')
-
-def contact(request):
-    return render(request,'contact.html')
 
 def listjobs(request):
     posts = createjobposts.objects.all()
@@ -174,12 +172,13 @@ class DownloadApplicantsCSVView(View):
         response['Content-Disposition'] = f'attachment; filename="applicants_{job.companyname}.csv"'
 
         csv_writer = csv.writer(response)
-        csv_writer.writerow(['Name', 'Email', 'Bio', 'Phone', 'Address', 'City', 'Zipcode', 'Created_at'])
+        csv_writer.writerow(['Name', 'Email', 'status'])
 
         for applicant in applicants:
             csv_writer.writerow([
                 applicant.user.username,
                 applicant.user.email,
+                applicant.status
                
             ])
 
@@ -200,14 +199,16 @@ def search(request):
         return render (request,'listjobs.html')
     
 def contact(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            form = contactForm(request.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(request,'Your message is submmitted')
-                return redirect('index')
+    if request.method == 'POST':
+        form = contactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your message is submitted')
+            return redirect('index')
         else:
-            return render(request,'contact.html')
+            # Pass the invalid form with errors back to the template
+            return render(request, 'contact.html', {'form': form})
     else:
-        return render(request,'contact.html')
+        # Create a new instance of the form for GET requests
+        form = contactForm()
+        return render(request, 'contact.html', {'form': form})
